@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Audio File for Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        .upload-container {
+            text-align: center;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        input[type="file"] {
+            margin: 15px 0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .response {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-container">
+        <h2>Upload Audio File for Analysis</h2>
+        <form id="uploadForm">
+            <input type="file" name="file" id="fileInput" accept="audio/*" required>
+            <button type="button" onclick="uploadFile()">Upload and Analyze</button>
+        </form>
+        <div id="response" class="response"></div>
+    </div>
+
+    <script>
+        async function uploadFile() {
+            const fileInput = document.getElementById("fileInput");
+            const responseDiv = document.getElementById("response");
+
+            if (!fileInput.files.length) {
+                responseDiv.textContent = "Please select a file.";
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+
+            try {
+                const response = await fetch("/analyze/", {
+                    method: "POST",
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error("Network response was not OK");
+                }
+
+                const result = await response.json();
+                responseDiv.innerHTML = `
+                    <p><strong>Transcription:</strong> ${result.transcription}</p>
+                    <p><strong>Fluency Score:</strong> ${result.fluency_score}%</p>
+                    <p><strong>Pronunciation Score:</strong> ${result.pronunciation_score}%</p>
+                    <p><strong>Unclear Words:</strong> ${result.unclear_words.join(", ")}</p>
+                `;
+            } catch (error) {
+                responseDiv.textContent = "Error: " + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
