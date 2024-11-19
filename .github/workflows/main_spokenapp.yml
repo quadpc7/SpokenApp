@@ -2,7 +2,7 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Build and deploy Python app to Azure Web App - SpokenApp
+name: Build and deploy Python app to Azure Web App - spokenapp
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
       - name: Set up Python version
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.10'
 
       - name: Create and start virtual environment
         run: |
@@ -65,14 +65,14 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_7AEB73CC878B45FD8969A0596863647B }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_1F7F541BA2364A1EB140F0EC8D8061D0 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_C2F0C757EB8D48C29EE3C9E8C776D3DB }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_B5E05B5B3FA64CB1AEF3B7B19F96FE85 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_AB24BD3073744930B1B5C0DAF28D9316 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_4A1F826F24E74C2FB19997D638D99A7D }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'SpokenApp'
+          app-name: 'spokenapp'
           slot-name: 'Production'
           
